@@ -248,23 +248,23 @@ export default function Home() {
 
           <div className="col-span-12 md:col-span-7 relative">
             <div className="absolute -top-10 -left-10 -right-10 -bottom-10 blob-lilac rounded-[40%] opacity-30 blur-3xl float-slow" aria-hidden />
-            <div className="relative glass-pink rounded-[2.5rem] p-8 md:p-10 -rotate-[1.5deg] shine">
-              <div className="flex items-center justify-between mb-4">
-                <span className="eyebrow-y2k">No. 042 · m/fulana</span>
-                <span className="flex items-center gap-1 text-xs font-semibold text-pink-hot">
+            <div className="relative glass-pink rounded-[2rem] md:rounded-[2.5rem] p-6 md:p-10 -rotate-[1.5deg] shine">
+              <div className="flex items-center justify-between mb-4 gap-2">
+                <span className="eyebrow-y2k truncate">No. 042 · m/fulana</span>
+                <span className="flex items-center gap-1 text-xs font-semibold text-pink-hot whitespace-nowrap">
                   <Lock className="size-3" /> Protegido
                 </span>
               </div>
-              <p className="script text-4xl md:text-5xl text-pink-flame leading-tight">
+              <p className="script text-3xl md:text-5xl text-pink-flame leading-tight">
                 Fulana,
               </p>
-              <p className="text-ink leading-[1.85] mt-5 text-lg">
+              <p className="text-ink leading-[1.7] md:leading-[1.85] mt-4 md:mt-5 text-base md:text-lg">
                 Tem coisas que eu só consigo te dizer assim, com tempo, sem
                 pressa, em letrinha que <span className="text-pink-hot script text-2xl">demora</span>{" "}
                 para ser escrita. Você sabe — a gente conversa muito, mas
                 algumas frases pedem um lugar próprio.
               </p>
-              <p className="text-ink leading-[1.85] mt-3 text-lg">
+              <p className="text-ink leading-[1.7] md:leading-[1.85] mt-3 text-base md:text-lg">
                 Esse aqui é o seu. <span className="text-pink-hot pulse-heart">♥</span>
               </p>
               <div className="mt-6 flex items-end justify-between">
@@ -280,31 +280,31 @@ export default function Home() {
       </section>
 
       {/* QUOTE / MANIFESTO */}
-      <section className="px-5 md:px-10 py-24 md:py-32 text-center">
-        <div className="mx-auto max-w-3xl glass rounded-[2.5rem] p-12 md:p-16 relative overflow-hidden">
+      <section className="px-5 md:px-10 py-16 md:py-32 text-center">
+        <div className="mx-auto max-w-3xl glass rounded-[2rem] md:rounded-[2.5rem] p-8 md:p-16 relative overflow-hidden">
           <div className="absolute inset-0 blob-pink opacity-20 blur-3xl" aria-hidden />
           <span
             aria-hidden
-            className="block mx-auto text-5xl md:text-6xl text-pink-hot pulse-heart leading-none"
+            className="block mx-auto text-4xl md:text-6xl text-pink-hot pulse-heart leading-none"
           >
             ♡
           </span>
-          <p className="script text-4xl md:text-6xl mt-6 leading-tight">
+          <p className="script text-3xl md:text-6xl mt-5 md:mt-6 leading-tight">
             Algumas palavras{" "}
             <span className="text-gradient">precisam</span>{" "}
             de um <span className="text-pink-hot">lugar</span>{" "}
             para durar.
           </p>
-          <p className="eyebrow-y2k mt-8">Manifesto ✿ Foreva</p>
+          <p className="eyebrow-y2k mt-6 md:mt-8">Manifesto ✿ Foreva</p>
         </div>
       </section>
 
       {/* PERGUNTAS */}
-      <section id="perguntas" className="px-5 md:px-10 py-20 md:py-28">
+      <section id="perguntas" className="px-5 md:px-10 py-16 md:py-28">
         <div className="mx-auto max-w-5xl">
-          <div className="text-center mb-12">
+          <div className="text-center mb-10 md:mb-12">
             <p className="eyebrow-y2k">Perguntas honestas ♡</p>
-            <h2 className="display-bubble text-5xl md:text-6xl mt-3">
+            <h2 className="display-bubble text-4xl md:text-6xl mt-3">
               <span className="text-gradient">Perguntinhas</span> rápidas
             </h2>
           </div>
