@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { memo, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller, useWatch, type Control } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import {
@@ -65,7 +65,6 @@ export default function CriarPage() {
   const {
     register,
     handleSubmit,
-    watch,
     control,
     formState: { errors },
   } = useForm<FormValues>({
@@ -80,8 +79,6 @@ export default function CriarPage() {
       creatorEmail: "",
     },
   });
-
-  const live = watch();
 
   async function handleFile(file: File) {
     if (file.size > MAX_UPLOAD_BYTES) {
@@ -152,8 +149,6 @@ export default function CriarPage() {
       setSubmitting(false);
     }
   }
-
-  const previewBody = live.letterBody ?? "";
 
   return (
     <main className="relative z-[1] flex flex-col">
@@ -365,14 +360,7 @@ export default function CriarPage() {
                 </div>
                 <span className="eyebrow-y2k">Como vai ficar ✿</span>
               </div>
-              <LetterPreview
-                recipient={live.recipient}
-                title={live.title}
-                greeting={live.greeting}
-                body={previewBody}
-                signature={live.signature}
-                images={images}
-              />
+              <LivePreview control={control} images={images} />
             </aside>
           </div>
         </div>
@@ -434,7 +422,32 @@ function Field({
   );
 }
 
-function LetterPreview({
+function LivePreview({
+  control,
+  images,
+}: {
+  control: Control<FormValues>;
+  images: UploadedImage[];
+}) {
+  const recipient = useWatch({ control, name: "recipient" });
+  const title = useWatch({ control, name: "title" });
+  const greeting = useWatch({ control, name: "greeting" });
+  const body = useWatch({ control, name: "letterBody" }) ?? "";
+  const signature = useWatch({ control, name: "signature" });
+
+  return (
+    <LetterPreview
+      recipient={recipient}
+      title={title}
+      greeting={greeting}
+      body={body}
+      signature={signature}
+      images={images}
+    />
+  );
+}
+
+const LetterPreview = memo(function LetterPreview({
   recipient,
   title,
   greeting,
@@ -581,7 +594,7 @@ function LetterPreview({
       </p>
     </div>
   );
-}
+});
 
 function dynRecipient(text: string): string {
   const len = text.length;
