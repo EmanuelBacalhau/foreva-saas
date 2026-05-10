@@ -342,21 +342,21 @@ export default function Home() {
       </section>
 
       {/* FINAL CTA */}
-      <section className="px-5 md:px-10 py-24 md:py-32">
-        <div className="mx-auto max-w-5xl glass-pink rounded-[3rem] p-10 md:p-16 text-center relative overflow-hidden shine">
+      <section className="px-5 md:px-10 py-16 md:py-32">
+        <div className="mx-auto max-w-5xl glass-pink rounded-[2rem] md:rounded-[3rem] p-8 md:p-16 text-center relative overflow-hidden shine">
           <div className="absolute -top-20 -left-20 size-80 blob-pink rounded-full opacity-50 blur-3xl float-slow" aria-hidden />
           <div className="absolute -bottom-20 -right-20 size-80 blob-lilac rounded-full opacity-50 blur-3xl float-mid" aria-hidden />
           <p className="eyebrow-y2k">Último ato ✦</p>
-          <h2 className="display-bubble text-5xl md:text-7xl mt-4 leading-[0.95]">
+          <h2 className="display-bubble text-4xl md:text-7xl mt-4 leading-[0.95]">
             Pronta para escrever<br />
             <span className="script text-pink-hot text-[1.3em]">aquela</span>{" "}
             carta?
           </h2>
-          <p className="text-ink-soft text-lg mt-5 max-w-md mx-auto">
+          <p className="text-ink-soft text-base md:text-lg mt-5 max-w-md mx-auto">
             Só {price} de uma vez. Nunca mais. ♡
           </p>
-          <div className="mt-9 flex justify-center">
-            <Link href="/criar" className="btn-bubble shine pill text-base">
+          <div className="mt-8 md:mt-9 flex justify-center">
+            <Link href="/criar" className="btn-bubble shine pill text-sm md:text-base w-full sm:w-auto">
               <Sparkles className="size-4" />
               Criar minha carta agora
               <ArrowRight className="size-4" />
@@ -366,11 +366,13 @@ export default function Home() {
       </section>
 
       <footer className="px-5 md:px-10 py-10">
-        <div className="mx-auto max-w-6xl glass-soft pill px-6 py-4 flex flex-col md:flex-row items-center justify-between gap-3">
-          <div className="flex items-center gap-2">
-            <span className="text-pink-hot pulse-heart">♡</span>
-            <span className="display-bubble text-xl">Foreva</span>
-            <span className="text-ink-mute text-sm">Cartas que duram para sempre</span>
+        <div className="mx-auto max-w-6xl glass-soft pill px-5 md:px-6 py-4 flex flex-col md:flex-row items-center justify-between gap-3 text-center md:text-left">
+          <div className="flex flex-col md:flex-row items-center gap-1 md:gap-2">
+            <div className="flex items-center gap-2">
+              <span className="text-pink-hot pulse-heart">♡</span>
+              <span className="display-bubble text-xl">Foreva</span>
+            </div>
+            <span className="text-ink-mute text-xs md:text-sm">Cartas que duram para sempre</span>
           </div>
           <p className="text-xs text-ink-mute">© {new Date().getFullYear()} ✿ Feito com amor</p>
         </div>
