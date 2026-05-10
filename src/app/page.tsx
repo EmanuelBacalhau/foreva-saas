@@ -11,12 +11,12 @@ export default function Home() {
   return (
     <main className="relative z-[1] flex flex-col">
       {/* NAV */}
-      <header className="sticky top-0 z-30 px-5 md:px-10 pt-4 md:pt-6 pb-3 bg-(--bg-base)/55 backdrop-blur-xl">
+      <header className="sticky top-0 z-30 px-4 md:px-10 pt-3 md:pt-6 pb-3 bg-(--bg-base)/55 backdrop-blur-xl">
         <div className="mx-auto max-w-6xl">
-          <div className="glass pill flex items-center justify-between px-3 md:px-4 py-2.5">
-            <Link href="/" className="flex items-center gap-2 px-3 group">
+          <div className="glass pill flex items-center justify-between gap-2 px-2 md:px-4 py-2 md:py-2.5">
+            <Link href="/" className="flex items-center gap-2 px-2 md:px-3 group min-w-0">
               <span className="text-pink-hot text-xl pulse-heart">♡</span>
-              <span className="display-bubble text-2xl tracking-tight">
+              <span className="display-bubble text-xl md:text-2xl tracking-tight">
                 Foreva
               </span>
             </Link>
@@ -27,17 +27,17 @@ export default function Home() {
             </nav>
             <Link
               href="/criar"
-              className="btn-bubble shine pill text-sm"
+              className="btn-bubble shine pill text-xs md:text-sm !px-4 md:!px-6 !py-2 md:!py-3 whitespace-nowrap"
             >
               Criar carta
-              <ArrowRight className="size-4" />
+              <ArrowRight className="size-3.5 md:size-4" />
             </Link>
           </div>
         </div>
       </header>
 
       {/* HERO */}
-      <section className="px-5 md:px-10 pt-12 md:pt-20 pb-16 md:pb-24">
+      <section className="px-5 md:px-10 pt-10 md:pt-20 pb-16 md:pb-24">
         <div className="mx-auto max-w-6xl grid grid-cols-12 gap-6 items-center">
           {/* big hero text */}
           <div className="col-span-12 md:col-span-7 relative">
@@ -46,7 +46,7 @@ export default function Home() {
               <span className="eyebrow-y2k">Edição I · 2026</span>
             </div>
 
-            <h1 className="display-bubble text-[clamp(3rem,9vw,7.5rem)] mt-5 fade-in-up delay-2">
+            <h1 className="display-bubble text-[clamp(2.5rem,9vw,7.5rem)] leading-[0.95] mt-5 fade-in-up delay-2">
               Uma{" "}
               <span className="text-gradient">cartinha</span>{" "}
               <br className="hidden md:block" />
@@ -56,26 +56,26 @@ export default function Home() {
               <span className="text-pink-flame ml-2">♡</span>
             </h1>
 
-            <p className="text-lg md:text-xl text-ink-soft max-w-xl mt-7 leading-relaxed fade-in-up delay-3">
+            <p className="text-base md:text-xl text-ink-soft max-w-xl mt-6 md:mt-7 leading-relaxed fade-in-up delay-3">
               Uma página linda só para ela (ou para ele). Texto, fotos, senha — e
               um <span className="font-semibold text-pink-hot">PIX único</span>.
               A página fica no ar para <em>sempre</em>. Sem mensalidade, sem feed,
               sem nada que estraga.
             </p>
 
-            <div className="mt-9 flex flex-col sm:flex-row sm:items-center gap-4 fade-in-up delay-4">
-              <Link href="/criar" className="btn-bubble shine pill text-base">
+            <div className="mt-8 md:mt-9 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 fade-in-up delay-4">
+              <Link href="/criar" className="btn-bubble shine pill text-sm md:text-base w-full sm:w-auto">
                 <Heart className="size-4 fill-current" />
                 Criar minha carta — {price}
                 <ArrowRight className="size-4" />
               </Link>
-              <a href="#exemplo" className="btn-glass pill text-sm">
+              <a href="#exemplo" className="btn-glass pill text-sm w-full sm:w-auto">
                 <span>Ver um exemplo</span>
                 <span className="text-pink-hot">♡</span>
               </a>
             </div>
 
-            <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm text-ink-soft fade-in-up delay-5">
+            <div className="mt-8 md:mt-10 flex flex-wrap items-center gap-x-4 md:gap-x-6 gap-y-2 md:gap-y-3 text-xs md:text-sm text-ink-soft fade-in-up delay-5">
               {[
                 { i: "✿", t: "Fotos com legenda" },
                 { i: "♡", t: "Senha de acesso" },
@@ -91,7 +91,7 @@ export default function Home() {
           </div>
 
           {/* hero visual — stacked cards */}
-          <div className="col-span-12 md:col-span-5 relative h-[460px] md:h-[560px] fade-in-up delay-3">
+          <div className="col-span-12 md:col-span-5 relative h-[380px] sm:h-[440px] md:h-[560px] fade-in-up delay-3">
             {/* big blob behind */}
             <div className="absolute -top-10 -left-10 -right-10 -bottom-10 blob-pink rounded-[50%] opacity-50 blur-3xl spin-slow" aria-hidden />
             <div className="absolute top-20 left-0 right-0 bottom-0 blob-lilac rounded-[50%] opacity-40 blur-2xl float-slow" aria-hidden />
@@ -122,11 +122,11 @@ export default function Home() {
             </div>
 
             {/* mini stickers */}
-            <div className="absolute top-2 right-6 sticker px-3 py-1.5 -rotate-[12deg] float-fast">
-              <span className="text-xs font-semibold text-pink-hot">eternal ♡</span>
+            <div className="absolute top-2 right-2 md:right-6 sticker px-2 md:px-3 py-1 md:py-1.5 -rotate-[12deg] float-fast">
+              <span className="text-[10px] md:text-xs font-semibold text-pink-hot">eternal ♡</span>
             </div>
-            <div className="absolute bottom-32 left-0 sticker px-3 py-1.5 rotate-[8deg] float-mid">
-              <span className="text-xs font-semibold text-lilac-deep">forever 4u</span>
+            <div className="absolute bottom-24 md:bottom-32 left-0 sticker px-2 md:px-3 py-1 md:py-1.5 rotate-[8deg] float-mid">
+              <span className="text-[10px] md:text-xs font-semibold text-lilac-deep">forever 4u</span>
             </div>
           </div>
         </div>
@@ -162,11 +162,11 @@ export default function Home() {
       </section>
 
       {/* COMO FUNCIONA */}
-      <section id="como" className="px-5 md:px-10 py-20 md:py-28">
+      <section id="como" className="px-5 md:px-10 py-16 md:py-28">
         <div className="mx-auto max-w-6xl">
-          <div className="text-center mb-14 md:mb-20">
+          <div className="text-center mb-12 md:mb-20">
             <p className="eyebrow-y2k fade-in-up delay-1">Passo a passo ✿</p>
-            <h2 className="display-bubble text-5xl md:text-7xl mt-3 fade-in-up delay-2">
+            <h2 className="display-bubble text-4xl md:text-7xl mt-3 fade-in-up delay-2">
               <span className="text-gradient">Três</span> passinhos{" "}
               <span className="script text-pink-hot text-[1.1em]">só</span>
             </h2>
@@ -216,15 +216,15 @@ export default function Home() {
       </section>
 
       {/* EXEMPLO */}
-      <section id="exemplo" className="px-5 md:px-10 py-20 md:py-28">
+      <section id="exemplo" className="px-5 md:px-10 py-16 md:py-28">
         <div className="mx-auto max-w-6xl grid grid-cols-12 gap-8 items-center">
           <div className="col-span-12 md:col-span-5">
             <p className="eyebrow-y2k">Um cheirinho ✿</p>
-            <h2 className="display-bubble text-5xl md:text-6xl mt-3">
+            <h2 className="display-bubble text-4xl md:text-6xl mt-3">
               Um <span className="text-gradient">cantinho</span><br />
               que é <span className="script text-pink-hot text-[1.15em]">só seu</span>.
             </h2>
-            <p className="text-ink-soft text-lg leading-relaxed mt-6">
+            <p className="text-ink-soft text-base md:text-lg leading-relaxed mt-6">
               Uma página linda, só sua. Você manda o link para quem ama, com
               senha se quiser. A pessoa abre, lê, chora, salva nos favoritos —
               e a página continua lá. Sempre.
