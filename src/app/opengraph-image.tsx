@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "Foreva — Cartas de amor eternas";
+export const alt = "Foreva - Cartas de amor eternas";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -17,7 +17,7 @@ export default function OG() {
           justifyContent: "center",
           background:
             "linear-gradient(135deg, #ffd1e8 0%, #ffe6f1 35%, #f5d6ff 70%, #d6e8ff 100%)",
-          fontFamily: "system-ui, sans-serif",
+          fontFamily: "sans-serif",
           padding: 80,
           position: "relative",
         }}
@@ -27,15 +27,31 @@ export default function OG() {
             position: "absolute",
             top: 60,
             left: 80,
-            fontSize: 44,
-            color: "#ff3d8a",
             display: "flex",
             alignItems: "center",
-            gap: 12,
           }}
         >
-          <span style={{ fontSize: 56 }}>♡</span>
-          <span style={{ fontWeight: 700, letterSpacing: -1 }}>Foreva</span>
+          <div
+            style={{
+              fontSize: 56,
+              color: "#ff3d8a",
+              marginRight: 16,
+              display: "flex",
+            }}
+          >
+            💌
+          </div>
+          <div
+            style={{
+              fontSize: 44,
+              color: "#ff3d8a",
+              fontWeight: 700,
+              letterSpacing: -1,
+              display: "flex",
+            }}
+          >
+            Foreva
+          </div>
         </div>
 
         <div
@@ -44,7 +60,6 @@ export default function OG() {
             flexDirection: "column",
             alignItems: "center",
             textAlign: "center",
-            gap: 24,
           }}
         >
           <div
@@ -54,21 +69,24 @@ export default function OG() {
               letterSpacing: 8,
               textTransform: "uppercase",
               fontWeight: 600,
+              marginBottom: 24,
+              display: "flex",
             }}
           >
-            ✿ Cartas de amor eternas ✿
+            Cartas de amor eternas
           </div>
           <div
             style={{
-              fontSize: 112,
+              fontSize: 108,
               fontWeight: 800,
               color: "#2a0a1a",
               letterSpacing: -4,
               lineHeight: 1,
               maxWidth: 1000,
+              display: "flex",
             }}
           >
-            Uma carta que <span style={{ color: "#ff3d8a" }}>não some</span>.
+            Uma carta que não some.
           </div>
           <div
             style={{
@@ -76,7 +94,8 @@ export default function OG() {
               color: "#5a2a40",
               maxWidth: 900,
               lineHeight: 1.3,
-              marginTop: 12,
+              marginTop: 36,
+              display: "flex",
             }}
           >
             Fotos, senha e PIX único. Eterna na internet.
@@ -89,15 +108,14 @@ export default function OG() {
             bottom: 60,
             display: "flex",
             alignItems: "center",
-            gap: 16,
             fontSize: 26,
             color: "#7a3a55",
             fontWeight: 500,
           }}
         >
-          <span style={{ color: "#ff3d8a", fontSize: 32 }}>♡</span>
-          foreva.com.br
-          <span style={{ color: "#ff3d8a", fontSize: 32 }}>♡</span>
+          <div style={{ marginRight: 16, display: "flex" }}>💕</div>
+          <div style={{ display: "flex" }}>foreva.com.br</div>
+          <div style={{ marginLeft: 16, display: "flex" }}>💕</div>
         </div>
       </div>
     ),
