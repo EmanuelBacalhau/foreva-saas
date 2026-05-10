@@ -132,8 +132,8 @@ export default function Home() {
         </div>
 
         {/* MARQUEE — decorativo, mantém lowercase estilizado */}
-        <div className="relative mx-auto max-w-7xl mt-16 md:mt-24 overflow-hidden">
-          <div className="marquee text-[clamp(2rem,5vw,4rem)] whitespace-nowrap">
+        <div className="relative mx-auto max-w-7xl mt-16 md:mt-24 overflow-hidden py-6 md:py-8">
+          <div className="marquee text-[clamp(2rem,5vw,4rem)] whitespace-nowrap leading-[1.2]">
             {Array.from({ length: 2 }).map((_, k) => (
               <div key={k} className="flex items-center gap-10 shrink-0">
                 {[

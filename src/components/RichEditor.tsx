@@ -47,7 +47,9 @@ export default function RichEditor({ value, onChange, onBlur, placeholder }: Pro
   if (!editor) {
     return (
       <div className="space-y-2">
-        <div className="glass-soft pill px-2 py-1.5 inline-flex items-center gap-1 flex-wrap h-9" />
+        <div className="sticky top-20 md:top-24 z-20 py-1">
+          <div className="glass pill px-2 py-1.5 inline-flex items-center gap-1 flex-wrap h-9" />
+        </div>
         <div className="input-bubble textarea min-h-[280px]" />
       </div>
     );
@@ -55,7 +57,8 @@ export default function RichEditor({ value, onChange, onBlur, placeholder }: Pro
 
   return (
     <div className="space-y-2">
-      <div className="glass-soft pill px-2 py-1.5 inline-flex items-center gap-1 flex-wrap">
+      <div className="sticky top-20 md:top-24 z-20 py-1">
+        <div className="glass pill px-2 py-1.5 inline-flex items-center gap-1 flex-wrap">
         <ToolbarBtn
           label="Negrito (Cmd+B)"
           active={editor.isActive("bold")}
@@ -89,6 +92,7 @@ export default function RichEditor({ value, onChange, onBlur, placeholder }: Pro
         <span className="ml-2 eyebrow-y2k !text-[9px] text-ink-mute">
           Selecione e clique ✦
         </span>
+        </div>
       </div>
       <EditorContent editor={editor} />
     </div>
