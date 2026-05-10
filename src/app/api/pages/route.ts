@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import DOMPurify from "isomorphic-dompurify";
+import sanitizeHtml from "sanitize-html";
 import { prisma } from "@/lib/prisma";
 import { makeSlug } from "@/lib/slug";
 import { hashPassword } from "@/lib/access";
@@ -34,9 +34,9 @@ export async function POST(req: NextRequest) {
 
   const slug = makeSlug(parsed.recipient);
   const passwordHash = parsed.password ? await hashPassword(parsed.password) : null;
-  const cleanBody = DOMPurify.sanitize(parsed.letterBody, {
-    ALLOWED_TAGS,
-    ALLOWED_ATTR: [],
+  const cleanBody = sanitizeHtml(parsed.letterBody, {
+    allowedTags: ALLOWED_TAGS,
+    allowedAttributes: {},
   });
   if (cleanBody.replace(/<[^>]+>/g, "").trim().length < 20) {
     return NextResponse.json(

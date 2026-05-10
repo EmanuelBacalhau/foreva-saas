@@ -1,9 +1,8 @@
-import DOMPurify from "isomorphic-dompurify";
+import sanitizeHtml from "sanitize-html";
 
 type LetterImage = { url: string; caption: string | null };
 
 const ALLOWED_TAGS = ["p", "strong", "em", "u", "mark", "br"];
-const ALLOWED_ATTR: string[] = [];
 
 export default function Letter({
   title,
@@ -20,9 +19,9 @@ export default function Letter({
   signature: string | null;
   images: LetterImage[];
 }) {
-  const safeBody = DOMPurify.sanitize(letterBody, {
-    ALLOWED_TAGS,
-    ALLOWED_ATTR,
+  const safeBody = sanitizeHtml(letterBody, {
+    allowedTags: ALLOWED_TAGS,
+    allowedAttributes: {},
   });
 
   return (
