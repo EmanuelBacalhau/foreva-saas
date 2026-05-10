@@ -29,7 +29,7 @@ export function verifyTokenForSlug(token: string | undefined, slug: string): boo
   return crypto.timingSafeEqual(Buffer.from(sig), Buffer.from(expected));
 }
 
-const COOKIE_NAME = "amora_access";
+const COOKIE_NAME = "foreva_access";
 
 export async function setAccessCookie(slug: string) {
   const jar = await cookies();

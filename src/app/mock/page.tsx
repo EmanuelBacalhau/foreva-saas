@@ -3,16 +3,10 @@ import Letter from "@/components/Letter";
 export default function MockLetterPage() {
   return (
     <Letter
-      recipient="Luana"
+      recipient="Fulana"
       title="Para você, sempre"
       greeting="Oiii, meu amor"
-      letterBody={`Tem coisas que eu **só consigo** te dizer assim, com tempo, sem pressa, em letrinha que demora para ser escrita. Você sabe — a gente conversa muito, mas algumas frases pedem _um lugar próprio_, longe do feed, longe do barulho. Esse aqui é o seu.
-
-Eu lembro do dia que a gente se conheceu — você ==reclamou do meu café== em pleno sábado de manhã, e eu achei que ia ficar bravo, mas só consegui rir. Desde aquela manhã, todo café tem gosto de você por perto.
-
-Obrigada por __aguentar minhas manias__, por rir das minhas piadas que ninguém entende, por chorar comigo nos filmes da Pixar. Obrigada por **existir do jeito que existe** — meio doida, meio doce, totalmente sua.
-
-Se um dia você esquecer o quanto é amada, abre essa página. Tá tudo aqui, gravado para ==sempre==. ♡`}
+      letterBody={`<p>Tem coisas que eu <strong>só consigo</strong> te dizer assim, com tempo, sem pressa, em letrinha que demora para ser escrita. Você sabe — a gente conversa muito, mas algumas frases pedem <em>um lugar próprio</em>, longe do feed, longe do barulho. Esse aqui é o seu.</p><p>Eu lembro do dia que a gente se conheceu — você <mark>reclamou do meu café</mark> em pleno sábado de manhã, e eu achei que ia ficar bravo, mas só consegui rir. Desde aquela manhã, todo café tem gosto de você por perto.</p><p>Obrigada por <u>aguentar minhas manias</u>, por rir das minhas piadas que ninguém entende, por chorar comigo nos filmes da Pixar. Obrigada por <strong>existir do jeito que existe</strong> — meio doida, meio doce, totalmente sua.</p><p>Se um dia você esquecer o quanto é amada, abre essa página. Tá tudo aqui, gravado para <mark>sempre</mark>. ♡</p>`}
       signature="Com amor — E."
       images={[
         {

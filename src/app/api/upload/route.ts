@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { presignUpload, r2Configured } from "@/lib/r2";
+import { MAX_UPLOAD_BYTES, presignUpload, s3Configured } from "@/lib/s3";
 import { nanoid } from "nanoid";
 
 const Body = z.object({
@@ -11,12 +11,13 @@ const Body = z.object({
     "image/webp",
     "image/gif",
   ]),
+  size: z.number().int().positive().max(MAX_UPLOAD_BYTES),
 });
 
 export async function POST(req: NextRequest) {
-  if (!r2Configured) {
+  if (!s3Configured) {
     return NextResponse.json(
-      { error: "R2 not configured. Set R2_* env vars." },
+      { error: "S3 not configured. Set S3_BUCKET, AWS_REGION, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY." },
       { status: 503 },
     );
   }
@@ -29,9 +30,9 @@ export async function POST(req: NextRequest) {
   }
 
   const ext = parsed.filename.split(".").pop()?.toLowerCase().replace(/[^a-z0-9]/g, "") ?? "bin";
-  const key = `letters/${new Date().toISOString().slice(0, 10)}/${nanoid()}.${ext}`;
+  const key = `tmp/${new Date().toISOString().slice(0, 10)}/${nanoid()}.${ext}`;
 
-  const { uploadUrl, publicUrl } = await presignUpload(key, parsed.contentType);
+  const { uploadUrl, fields, publicUrl } = await presignUpload(key, parsed.contentType);
 
-  return NextResponse.json({ uploadUrl, publicUrl, key });
+  return NextResponse.json({ uploadUrl, fields, publicUrl, key });
 }

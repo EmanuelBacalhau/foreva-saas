@@ -468,4 +468,62 @@
     from { transform: translateX(0); }
     to { transform: translateX(-50%); }
   }
+
+  /* RICH TEXT — letter body rendering */
+  .prose-letter > p {
+    margin: 0 0 1.05rem;
+  }
+  .prose-letter > p:last-child {
+    margin-bottom: 0;
+  }
+  .prose-letter strong {
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .prose-letter em {
+    font-style: italic;
+  }
+  .prose-letter u {
+    text-decoration: underline;
+    text-decoration-color: var(--pink-hot);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+  }
+  .prose-letter mark {
+    background: oklch(0.88 0.07 350 / 0.7);
+    color: var(--pink-flame);
+    padding: 0 0.3rem;
+    border-radius: 0.4rem;
+    margin: 0 0.1rem;
+  }
+
+  /* TIPTAP editor surface — uses input-bubble base, opens up like a textarea */
+  .ProseMirror {
+    outline: none;
+    min-height: 280px;
+  }
+  .ProseMirror p.is-editor-empty:first-child::before {
+    content: attr(data-placeholder);
+    color: var(--ink-mute);
+    pointer-events: none;
+    height: 0;
+    float: left;
+  }
+  .ProseMirror > p {
+    margin: 0 0 1rem;
+  }
+  .ProseMirror strong { font-weight: 700; }
+  .ProseMirror em { font-style: italic; }
+  .ProseMirror u {
+    text-decoration: underline;
+    text-decoration-color: var(--pink-hot);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+  }
+  .ProseMirror mark {
+    background: oklch(0.88 0.07 350 / 0.7);
+    color: var(--pink-flame);
+    padding: 0 0.3rem;
+    border-radius: 0.4rem;
+  }
 }

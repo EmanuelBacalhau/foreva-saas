@@ -48,7 +48,7 @@ export default function PasswordGate({
           <div className="glass pill flex items-center justify-between px-3 md:px-4 py-2.5">
             <div className="flex items-center gap-2 px-3">
               <span className="text-pink-hot pulse-heart">♡</span>
-              <span className="display-bubble text-2xl">Amora</span>
+              <span className="display-bubble text-2xl">Foreva</span>
             </div>
             <span className="eyebrow-y2k">Protegido ✿</span>
           </div>

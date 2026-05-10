@@ -17,7 +17,7 @@ export default function Home() {
             <Link href="/" className="flex items-center gap-2 px-3 group">
               <span className="text-pink-hot text-xl pulse-heart">♡</span>
               <span className="display-bubble text-2xl tracking-tight">
-                Amora
+                Foreva
               </span>
             </Link>
             <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-ink-soft">
@@ -137,7 +137,7 @@ export default function Home() {
             {Array.from({ length: 2 }).map((_, k) => (
               <div key={k} className="flex items-center gap-10 shrink-0">
                 {[
-                  ["amora", "text-pink-hot"],
+                  ["foreva", "text-pink-hot"],
                   ["♡", "text-lilac-deep"],
                   ["forever", "text-sky-deep"],
                   ["✿", "text-peach"],
@@ -250,13 +250,13 @@ export default function Home() {
             <div className="absolute -top-10 -left-10 -right-10 -bottom-10 blob-lilac rounded-[40%] opacity-30 blur-3xl float-slow" aria-hidden />
             <div className="relative glass-pink rounded-[2.5rem] p-8 md:p-10 -rotate-[1.5deg] shine">
               <div className="flex items-center justify-between mb-4">
-                <span className="eyebrow-y2k">No. 042 · m/luana</span>
+                <span className="eyebrow-y2k">No. 042 · m/fulana</span>
                 <span className="flex items-center gap-1 text-xs font-semibold text-pink-hot">
                   <Lock className="size-3" /> Protegido
                 </span>
               </div>
               <p className="script text-4xl md:text-5xl text-pink-flame leading-tight">
-                Luana,
+                Fulana,
               </p>
               <p className="text-ink leading-[1.85] mt-5 text-lg">
                 Tem coisas que eu só consigo te dizer assim, com tempo, sem
@@ -295,7 +295,7 @@ export default function Home() {
             de um <span className="text-pink-hot">lugar</span>{" "}
             para durar.
           </p>
-          <p className="eyebrow-y2k mt-8">Manifesto ✿ Amora</p>
+          <p className="eyebrow-y2k mt-8">Manifesto ✿ Foreva</p>
         </div>
       </section>
 
@@ -369,7 +369,7 @@ export default function Home() {
         <div className="mx-auto max-w-6xl glass-soft pill px-6 py-4 flex flex-col md:flex-row items-center justify-between gap-3">
           <div className="flex items-center gap-2">
             <span className="text-pink-hot pulse-heart">♡</span>
-            <span className="display-bubble text-xl">Amora</span>
+            <span className="display-bubble text-xl">Foreva</span>
             <span className="text-ink-mute text-sm">Cartas que duram para sempre</span>
           </div>
           <p className="text-xs text-ink-mute">© {new Date().getFullYear()} ✿ Feito com amor</p>

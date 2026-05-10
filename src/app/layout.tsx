@@ -23,12 +23,12 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Amora ♡ Uma carta para sempre",
+  title: "Foreva",
   description:
     "Uma carta de amor que dura para sempre. Fotos, senha, PIX único e a página fica eterna ✨",
   metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL ?? "http://localhost:3000"),
   openGraph: {
-    title: "Amora ♡ Uma carta para sempre",
+    title: "♡ Foreva",
     description: "Uma carta que não some. Fotos, senha, PIX único.",
     type: "website",
     locale: "pt_BR",

@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
 import {
   ArrowRight,
   Check,
@@ -31,11 +30,11 @@ export default function PaymentClient({
   alreadyPaid: boolean;
   priceCents: number;
 }) {
-  const router = useRouter();
   const [charge, setCharge] = useState<Charge | null>(null);
   const [creating, setCreating] = useState(false);
   const [paid, setPaid] = useState(alreadyPaid);
   const [copied, setCopied] = useState(false);
+  const [urlCopied, setUrlCopied] = useState(false);
   const [now, setNow] = useState<number>(() => Date.now());
 
   const price = useMemo(
@@ -84,7 +83,6 @@ export default function PaymentClient({
         if (j.paid) {
           setPaid(true);
           toast.success("Pagamento confirmado ♡");
-          setTimeout(() => router.push(`/m/${slug}`), 900);
         }
       } catch {}
     };
@@ -94,7 +92,7 @@ export default function PaymentClient({
       cancelled = true;
       clearInterval(i);
     };
-  }, [paid, pageId, router, slug]);
+  }, [paid, pageId]);
 
   useEffect(() => {
     if (!charge) return;
@@ -112,6 +110,22 @@ export default function PaymentClient({
   }, [charge, now]);
 
   if (paid) {
+    const origin =
+      process.env.NEXT_PUBLIC_BASE_URL ||
+      (typeof window !== "undefined" ? window.location.origin : "");
+    const shareUrl = `${origin}/m/${slug}`;
+
+    async function copyUrl() {
+      try {
+        await navigator.clipboard.writeText(shareUrl);
+        setUrlCopied(true);
+        toast.success("Link copiado ♡");
+        setTimeout(() => setUrlCopied(false), 2000);
+      } catch {
+        toast.error("Não consegui copiar");
+      }
+    }
+
     return (
       <div className="relative">
         <div className="absolute -inset-8 blob-pink rounded-[40%] opacity-40 blur-3xl float-slow" aria-hidden />
@@ -126,8 +140,31 @@ export default function PaymentClient({
             <span className="text-pink-hot">♡</span>
           </h2>
           <p className="text-ink-soft mt-4 max-w-sm mx-auto">
-            A página da carta já está disponível ✨
+            Compartilhe esse link com quem você ama ✨
           </p>
+
+          <div className="mt-7 mx-auto max-w-md">
+            <p className="eyebrow-y2k mb-2">Link da carta</p>
+            <div className="glass-soft pill flex items-center gap-2 px-3 py-2">
+              <span className="flex-1 text-sm text-ink truncate text-left px-2">
+                {shareUrl}
+              </span>
+              <button
+                type="button"
+                onClick={copyUrl}
+                className="shrink-0 size-9 grid place-items-center rounded-full bg-pink-hot text-white hover:bg-pink-flame transition-colors"
+                aria-label="Copiar link"
+                title="Copiar link"
+              >
+                {urlCopied ? (
+                  <Check className="size-4" />
+                ) : (
+                  <Copy className="size-4" />
+                )}
+              </button>
+            </div>
+          </div>
+
           <a
             href={`/m/${slug}`}
             className="btn-bubble shine pill text-base mt-7 inline-flex"

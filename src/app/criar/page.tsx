@@ -1,30 +1,29 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import {
   ArrowLeft,
   ArrowRight,
-  Bold,
-  Highlighter,
   ImagePlus,
-  Italic,
   Loader2,
   Lock,
+  Mail,
   Sparkles,
-  Underline,
   X,
 } from "lucide-react";
 import { toast } from "sonner";
 
 import { cn } from "@/lib/utils";
-import { renderInline, splitParagraphs } from "@/lib/markdown";
+import RichEditor from "@/components/RichEditor";
 
-type UploadedImage = { url: string; caption: string };
+const MAX_UPLOAD_BYTES = 10 * 1024 * 1024;
+
+type UploadedImage = { url: string; key: string; caption: string };
 
 const schema = z.object({
   title: z.string().min(2, "Dá um titulinho fofo").max(120),
@@ -32,8 +31,11 @@ const schema = z.object({
   greeting: z.string().max(120).optional().or(z.literal("")),
   letterBody: z
     .string()
-    .min(20, "Uma carta merece pelo menos 20 letrinhas")
-    .max(20000, "Passou do limite ♡"),
+    .max(50000, "Passou do limite ♡")
+    .refine(
+      (html) => html.replace(/<[^>]+>/g, "").trim().length >= 20,
+      "Uma carta merece pelo menos 20 letrinhas",
+    ),
   signature: z.string().max(80).optional().or(z.literal("")),
   password: z
     .string()
@@ -41,6 +43,15 @@ const schema = z.object({
     .optional()
     .or(z.literal(""))
     .refine((v) => !v || v.length >= 4, "Mínimo 4 caracteres"),
+  creatorEmail: z
+    .string()
+    .max(160)
+    .optional()
+    .or(z.literal(""))
+    .refine(
+      (v) => !v || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v),
+      "E-mail inválido",
+    ),
 });
 
 type FormValues = z.infer<typeof schema>;
@@ -55,6 +66,7 @@ export default function CriarPage() {
     register,
     handleSubmit,
     watch,
+    control,
     formState: { errors },
   } = useForm<FormValues>({
     resolver: zodResolver(schema),
@@ -65,31 +77,44 @@ export default function CriarPage() {
       letterBody: "",
       signature: "",
       password: "",
+      creatorEmail: "",
     },
   });
 
   const live = watch();
 
   async function handleFile(file: File) {
+    if (file.size > MAX_UPLOAD_BYTES) {
+      toast.error(`Foto até 10MB. Essa tem ${(file.size / 1024 / 1024).toFixed(1)}MB`);
+      return;
+    }
     setUploading(true);
     try {
       const presignRes = await fetch("/api/upload", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ filename: file.name, contentType: file.type }),
+        body: JSON.stringify({
+          filename: file.name,
+          contentType: file.type,
+          size: file.size,
+        }),
       });
       if (!presignRes.ok) {
         const j = await presignRes.json().catch(() => ({}));
         throw new Error(j.error ?? "Falha no upload");
       }
-      const { uploadUrl, publicUrl } = await presignRes.json();
-      const putRes = await fetch(uploadUrl, {
-        method: "PUT",
-        headers: { "Content-Type": file.type },
-        body: file,
+      const { uploadUrl, fields, publicUrl, key } = await presignRes.json();
+      const formData = new FormData();
+      Object.entries(fields as Record<string, string>).forEach(([k, v]) => {
+        formData.append(k, v);
       });
-      if (!putRes.ok) throw new Error("Falha enviando arquivo");
-      setImages((prev) => [...prev, { url: publicUrl, caption: "" }]);
+      formData.append("file", file);
+      const postRes = await fetch(uploadUrl, {
+        method: "POST",
+        body: formData,
+      });
+      if (!postRes.ok) throw new Error("Falha enviando arquivo");
+      setImages((prev) => [...prev, { url: publicUrl, key, caption: "" }]);
       toast.success("Fotinha adicionada ♡");
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Erro no upload");
@@ -108,7 +133,8 @@ export default function CriarPage() {
         letterBody: values.letterBody,
         signature: values.signature || null,
         password: values.password || null,
-        images,
+        creatorEmail: values.creatorEmail || null,
+        images: images.map((img) => ({ key: img.key, caption: img.caption })),
       };
       const res = await fetch("/api/pages", {
         method: "POST",
@@ -127,7 +153,7 @@ export default function CriarPage() {
     }
   }
 
-  const previewParagraphs = splitParagraphs(live.letterBody ?? "");
+  const previewBody = live.letterBody ?? "";
 
   return (
     <main className="relative z-[1] flex flex-col">
@@ -136,7 +162,7 @@ export default function CriarPage() {
           <div className="glass pill flex items-center justify-between px-3 md:px-4 py-2.5">
             <Link href="/" className="flex items-center gap-2 px-3 group">
               <ArrowLeft className="size-4 group-hover:-translate-x-0.5 transition-transform text-ink-soft" />
-              <span className="display-bubble text-2xl tracking-tight">Amora</span>
+              <span className="display-bubble text-2xl tracking-tight">Foreva</span>
             </Link>
             <span className="eyebrow-y2k hidden md:block">Capítulo I ✿ Escrever</span>
           </div>
@@ -183,9 +209,17 @@ export default function CriarPage() {
                   hint="Linha em branco = parágrafo. Selecione um trecho e use a barrinha para formatar ✿"
                   error={errors.letterBody?.message}
                 >
-                  <MarkdownTextarea
-                    register={register("letterBody")}
-                    placeholder="Hoje quero te dizer o quanto…"
+                  <Controller
+                    control={control}
+                    name="letterBody"
+                    render={({ field }) => (
+                      <RichEditor
+                        value={field.value}
+                        onChange={field.onChange}
+                        onBlur={field.onBlur}
+                        placeholder="Hoje quero te dizer o quanto…"
+                      />
+                    )}
                   />
                 </Field>
                 <Field label="Assinatura" hint="Como você assina" error={errors.signature?.message}>
@@ -270,6 +304,22 @@ export default function CriarPage() {
                     />
                   </div>
                 </Field>
+                <Field
+                  label="Seu e-mail"
+                  hint="Opcional. Pra você acessar suas cartas depois ✿ Não compartilhamos."
+                  error={errors.creatorEmail?.message}
+                >
+                  <div className="relative">
+                    <Mail className="absolute left-4 top-1/2 -translate-y-1/2 size-4 text-pink-hot" />
+                    <input
+                      {...register("creatorEmail")}
+                      type="email"
+                      autoComplete="email"
+                      placeholder="seuemail@exemplo.com"
+                      className="input-bubble pl-10"
+                    />
+                  </div>
+                </Field>
               </Section>
 
               <div className="glass-soft rounded-3xl p-6 flex flex-col sm:flex-row items-center gap-4 justify-between">
@@ -310,7 +360,7 @@ export default function CriarPage() {
                 recipient={live.recipient}
                 title={live.title}
                 greeting={live.greeting}
-                paragraphs={previewParagraphs}
+                body={previewBody}
                 signature={live.signature}
                 images={images}
               />
@@ -379,14 +429,14 @@ function LetterPreview({
   recipient,
   title,
   greeting,
-  paragraphs,
+  body,
   signature,
   images,
 }: {
   recipient?: string;
   title?: string;
   greeting?: string;
-  paragraphs: string[];
+  body: string;
   signature?: string;
   images: { url: string; caption: string }[];
 }) {
@@ -445,14 +495,11 @@ function LetterPreview({
                 </p>
               )}
 
-              {paragraphs.length > 0 ? (
-                <div className="space-y-3 text-ink leading-[1.85] text-[0.95rem]">
-                  {paragraphs.map((p, i) => (
-                    <p key={i} className="break-words [overflow-wrap:anywhere]">
-                      {renderInline(p)}
-                    </p>
-                  ))}
-                </div>
+              {body && body !== "<p></p>" ? (
+                <div
+                  className="prose-letter text-ink leading-[1.85] text-[0.95rem] break-words [overflow-wrap:anywhere]"
+                  dangerouslySetInnerHTML={{ __html: body }}
+                />
               ) : (
                 <p className="text-ink-mute italic">
                   Sua carta aparece aqui enquanto você escreve ✿
@@ -537,125 +584,3 @@ function dynRecipient(text: string): string {
   return "clamp(1.1rem, 3.5vw, 1.6rem)";
 }
 
-type RHFRegister = ReturnType<ReturnType<typeof useForm<FormValues>>["register"]>;
-
-function MarkdownTextarea({
-  register,
-  placeholder,
-}: {
-  register: RHFRegister;
-  placeholder?: string;
-}) {
-  const taRef = useRef<HTMLTextAreaElement | null>(null);
-
-  function wrap(left: string, right: string = left, fallback = "Texto") {
-    const ta = taRef.current;
-    if (!ta) return;
-    const start = ta.selectionStart ?? 0;
-    const end = ta.selectionEnd ?? 0;
-    const value = ta.value;
-    const sel = value.slice(start, end);
-    const inner = sel || fallback;
-    const next = value.slice(0, start) + left + inner + right + value.slice(end);
-
-    const setter = Object.getOwnPropertyDescriptor(
-      window.HTMLTextAreaElement.prototype,
-      "value",
-    )?.set;
-    setter?.call(ta, next);
-    ta.dispatchEvent(new Event("input", { bubbles: true }));
-
-    requestAnimationFrame(() => {
-      ta.focus();
-      const innerStart = start + left.length;
-      const innerEnd = innerStart + inner.length;
-      ta.setSelectionRange(innerStart, innerEnd);
-    });
-  }
-
-  function onKey(e: React.KeyboardEvent<HTMLTextAreaElement>) {
-    const mod = e.metaKey || e.ctrlKey;
-    if (!mod || e.shiftKey || e.altKey) return;
-    const k = e.key.toLowerCase();
-    if (k === "b") {
-      e.preventDefault();
-      wrap("**", "**", "Texto");
-    } else if (k === "i") {
-      e.preventDefault();
-      wrap("_", "_", "Itálico");
-    } else if (k === "u") {
-      e.preventDefault();
-      wrap("__", "__", "Sublinhado");
-    } else if (k === "e") {
-      e.preventDefault();
-      wrap("==", "==", "Destaque");
-    }
-  }
-
-  return (
-    <div className="space-y-2">
-      <div className="glass-soft pill px-2 py-1.5 inline-flex items-center gap-1 flex-wrap">
-        <ToolbarBtn label="Negrito (Cmd+B)" onClick={() => wrap("**", "**", "Texto")}>
-          <Bold className="size-3.5" strokeWidth={2.4} />
-        </ToolbarBtn>
-        <ToolbarBtn label="Itálico (Cmd+I)" onClick={() => wrap("_", "_", "Itálico")}>
-          <Italic className="size-3.5" strokeWidth={2.4} />
-        </ToolbarBtn>
-        <ToolbarBtn label="Sublinhado (Cmd+U)" onClick={() => wrap("__", "__", "Sublinhado")}>
-          <Underline className="size-3.5" strokeWidth={2.4} />
-        </ToolbarBtn>
-        <span className="w-px h-4 bg-pink-soft mx-1" aria-hidden />
-        <ToolbarBtn
-          label="Destaque rosa (Cmd+E)"
-          onClick={() => wrap("==", "==", "Destaque")}
-          tone="hot"
-        >
-          <Highlighter className="size-3.5" strokeWidth={2.2} />
-        </ToolbarBtn>
-        <span className="ml-2 eyebrow-y2k !text-[9px] text-ink-mute">
-          Selecione e clique ✦
-        </span>
-      </div>
-      <textarea
-        {...register}
-        ref={(el) => {
-          register.ref(el);
-          taRef.current = el;
-        }}
-        onKeyDown={onKey}
-        rows={12}
-        placeholder={placeholder}
-        className="input-bubble textarea text-base leading-[1.85] font-mono"
-        spellCheck
-      />
-    </div>
-  );
-}
-
-function ToolbarBtn({
-  label,
-  onClick,
-  tone,
-  children,
-}: {
-  label: string;
-  onClick: () => void;
-  tone?: "hot";
-  children: React.ReactNode;
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      title={label}
-      aria-label={label}
-      className={cn(
-        "size-7 grid place-items-center rounded-full border transition-all",
-        "border-pink-soft text-ink hover:bg-pink-soft hover:text-pink-flame hover:-translate-y-0.5",
-        tone === "hot" && "text-pink-hot border-pink-hot/40 hover:bg-pink-hot hover:text-white",
-      )}
-    >
-      {children}
-    </button>
-  );
-}

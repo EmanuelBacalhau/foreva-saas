@@ -1,6 +1,9 @@
-import { renderInline, splitParagraphs } from "@/lib/markdown";
+import DOMPurify from "isomorphic-dompurify";
 
 type LetterImage = { url: string; caption: string | null };
+
+const ALLOWED_TAGS = ["p", "strong", "em", "u", "mark", "br"];
+const ALLOWED_ATTR: string[] = [];
 
 export default function Letter({
   title,
@@ -17,7 +20,10 @@ export default function Letter({
   signature: string | null;
   images: LetterImage[];
 }) {
-  const paragraphs = splitParagraphs(letterBody);
+  const safeBody = DOMPurify.sanitize(letterBody, {
+    ALLOWED_TAGS,
+    ALLOWED_ATTR,
+  });
 
   return (
     <article className="relative z-[1] flex flex-col">
@@ -26,7 +32,7 @@ export default function Letter({
           <div className="glass pill flex items-center justify-between px-3 md:px-4 py-2.5">
             <div className="flex items-center gap-2 px-3">
               <span className="text-pink-hot pulse-heart">♡</span>
-              <span className="display-bubble text-2xl">Amora</span>
+              <span className="display-bubble text-2xl">Foreva</span>
             </div>
             <span className="eyebrow-y2k hidden md:block">Edição I ✿ Uma carta</span>
           </div>
@@ -76,13 +82,10 @@ export default function Letter({
               </p>
             )}
 
-            <div className="space-y-5 text-ink leading-[1.95] text-lg md:text-xl">
-              {paragraphs.map((p, i) => (
-                <p key={i} className="break-words [overflow-wrap:anywhere]">
-                  {renderInline(p)}
-                </p>
-              ))}
-            </div>
+            <div
+              className="prose-letter text-ink leading-[1.95] text-lg md:text-xl break-words [overflow-wrap:anywhere]"
+              dangerouslySetInnerHTML={{ __html: safeBody }}
+            />
 
             {signature && (
               <div className="mt-12 flex items-center justify-end gap-3">
@@ -179,7 +182,7 @@ export default function Letter({
         <div className="mx-auto max-w-6xl glass-soft pill px-6 py-4 flex flex-col md:flex-row items-center justify-between gap-3">
           <div className="flex items-center gap-2">
             <span className="text-pink-hot pulse-heart">♡</span>
-            <span className="display-bubble text-xl">Amora · {recipient}</span>
+            <span className="display-bubble text-xl">Foreva · {recipient}</span>
           </div>
           <p className="text-xs text-ink-mute">
             Eternizado em {new Date().getFullYear()} ✿

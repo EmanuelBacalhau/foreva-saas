@@ -26,7 +26,7 @@ export default async function PagamentoPage({
           <div className="glass pill flex items-center justify-between px-3 md:px-4 py-2.5">
             <Link href="/" className="flex items-center gap-2 px-3 group">
               <ArrowLeft className="size-4 group-hover:-translate-x-0.5 transition-transform text-ink-soft" />
-              <span className="display-bubble text-2xl">Amora</span>
+              <span className="display-bubble text-2xl">Foreva</span>
             </Link>
             <span className="eyebrow-y2k hidden md:block">Capítulo II ♡ Pagamento</span>
           </div>
