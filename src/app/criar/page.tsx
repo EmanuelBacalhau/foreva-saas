@@ -247,11 +247,18 @@ export default function CriarPage() {
                     type="file"
                     className="hidden"
                     accept="image/jpeg,image/png,image/webp,image/gif"
+                    multiple
                     disabled={uploading || images.length >= 20}
-                    onChange={(e) => {
-                      const f = e.currentTarget.files?.[0];
-                      if (f) handleFile(f);
+                    onChange={async (e) => {
+                      const files = Array.from(e.currentTarget.files ?? []);
                       e.currentTarget.value = "";
+                      const slots = 20 - images.length;
+                      if (files.length > slots) {
+                        toast.error(`Só cabem mais ${slots} foto(s) ♡`);
+                      }
+                      for (const f of files.slice(0, slots)) {
+                        await handleFile(f);
+                      }
                     }}
                   />
                 </label>
