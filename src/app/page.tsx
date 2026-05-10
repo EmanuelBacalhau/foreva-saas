@@ -1,15 +1,86 @@
 import Link from "next/link";
 import { ArrowRight, Heart, Lock, Sparkles } from "lucide-react";
 
+const SITE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? "http://localhost:3000";
+
+const FAQS = [
+  {
+    q: "É mensal?",
+    a: "Não! Um único PIX e a página fica. Sem renovação, sem cobrança recorrente nem nada.",
+  },
+  {
+    q: "Quem pode ver?",
+    a: "Quem tiver o link. Se você botar senha, só quem souber a senha consegue abrir.",
+  },
+  {
+    q: "Posso editar depois?",
+    a: "Ainda não — a carta é congelada na criação para ter cara de carta de verdade ♡",
+  },
+  {
+    q: "Funciona no celular?",
+    a: "Sim! A página é leve, abre rapidinho e foi pensada para ser lida na cama, à noite.",
+  },
+];
+
 export default function Home() {
   const priceCents = Number(process.env.PRICE_CENTS ?? "1990");
   const price = (priceCents / 100).toLocaleString("pt-BR", {
     style: "currency",
     currency: "BRL",
   });
+  const priceBRL = (priceCents / 100).toFixed(2);
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": `${SITE_URL}/#organization`,
+        name: "Foreva",
+        url: SITE_URL,
+        logo: `${SITE_URL}/icon.svg`,
+        description:
+          "Plataforma brasileira para criar cartas de amor eternas na internet.",
+      },
+      {
+        "@type": "WebSite",
+        "@id": `${SITE_URL}/#website`,
+        url: SITE_URL,
+        name: "Foreva",
+        inLanguage: "pt-BR",
+        publisher: { "@id": `${SITE_URL}/#organization` },
+      },
+      {
+        "@type": "Product",
+        name: "Carta de amor eterna Foreva",
+        description:
+          "Página personalizada com sua carta de amor, fotos e proteção por senha. Pagamento PIX único.",
+        brand: { "@id": `${SITE_URL}/#organization` },
+        offers: {
+          "@type": "Offer",
+          price: priceBRL,
+          priceCurrency: "BRL",
+          availability: "https://schema.org/InStock",
+          url: `${SITE_URL}/criar`,
+        },
+      },
+      {
+        "@type": "FAQPage",
+        mainEntity: FAQS.map((f) => ({
+          "@type": "Question",
+          name: f.q,
+          acceptedAnswer: { "@type": "Answer", text: f.a },
+        })),
+      },
+    ],
+  };
 
   return (
-    <main className="relative z-[1] flex flex-col">
+    <main className="relative z-1 flex flex-col">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* NAV */}
       <header className="sticky top-0 z-30 px-4 md:px-10 pt-3 md:pt-6 pb-3 bg-(--bg-base)/55 backdrop-blur-xl">
         <div className="mx-auto max-w-6xl">
@@ -27,7 +98,7 @@ export default function Home() {
             </nav>
             <Link
               href="/criar"
-              className="btn-bubble shine pill text-xs md:text-sm !px-4 md:!px-6 !py-2 md:!py-3 whitespace-nowrap"
+              className="btn-bubble shine pill text-xs md:text-sm px-4! md:px-6! py-2! md:py-3! whitespace-nowrap"
             >
               Criar carta
               <ArrowRight className="size-3.5 md:size-4" />
@@ -91,14 +162,14 @@ export default function Home() {
           </div>
 
           {/* hero visual — stacked cards */}
-          <div className="col-span-12 md:col-span-5 relative h-[380px] sm:h-[440px] md:h-[560px] fade-in-up delay-3">
+          <div className="col-span-12 md:col-span-5 relative h-95 sm:h-110 md:h-140 fade-in-up delay-3">
             {/* big blob behind */}
             <div className="absolute -top-10 -left-10 -right-10 -bottom-10 blob-pink rounded-[50%] opacity-50 blur-3xl spin-slow" aria-hidden />
             <div className="absolute top-20 left-0 right-0 bottom-0 blob-lilac rounded-[50%] opacity-40 blur-2xl float-slow" aria-hidden />
 
             {/* polaroid card 1 */}
-            <div className="absolute top-6 left-2 md:left-8 w-[58%] sticker p-3 -rotate-[6deg] float-slow shine">
-              <div className="aspect-[4/5] rounded-2xl blob-peach grid place-items-center">
+            <div className="absolute top-6 left-2 md:left-8 w-[58%] sticker p-3 -rotate-6 float-slow shine">
+              <div className="aspect-4/5 rounded-2xl blob-peach grid place-items-center">
                 <span className="display-bubble text-7xl text-pink-flame">E</span>
               </div>
               <p className="script text-2xl text-pink-hot mt-2 text-center">Paravocê ♡</p>
@@ -122,7 +193,7 @@ export default function Home() {
             </div>
 
             {/* mini stickers */}
-            <div className="absolute top-2 right-2 md:right-6 sticker px-2 md:px-3 py-1 md:py-1.5 -rotate-[12deg] float-fast">
+            <div className="absolute top-2 right-2 md:right-6 sticker px-2 md:px-3 py-1 md:py-1.5 -rotate-12 float-fast">
               <span className="text-[10px] md:text-xs font-semibold text-pink-hot">eternal ♡</span>
             </div>
             <div className="absolute bottom-24 md:bottom-32 left-0 sticker px-2 md:px-3 py-1 md:py-1.5 rotate-[8deg] float-mid">
@@ -248,7 +319,7 @@ export default function Home() {
 
           <div className="col-span-12 md:col-span-7 relative">
             <div className="absolute -top-10 -left-10 -right-10 -bottom-10 blob-lilac rounded-[40%] opacity-30 blur-3xl float-slow" aria-hidden />
-            <div className="relative glass-pink rounded-[2rem] md:rounded-[2.5rem] p-6 md:p-10 -rotate-[1.5deg] shine">
+            <div className="relative glass-pink rounded-[2rem] md:rounded-[2.5rem] p-6 md:p-10 rotate-[-1.5deg] shine">
               <div className="flex items-center justify-between mb-4 gap-2">
                 <span className="eyebrow-y2k truncate">No. 042 · m/fulana</span>
                 <span className="flex items-center gap-1 text-xs font-semibold text-pink-hot whitespace-nowrap">
@@ -309,24 +380,7 @@ export default function Home() {
             </h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            {[
-              {
-                q: "É mensal?",
-                a: "Não! Um único PIX e a página fica. Sem renovação, sem cobrança recorrente nem nada.",
-              },
-              {
-                q: "Quem pode ver?",
-                a: "Quem tiver o link. Se você botar senha, só quem souber a senha consegue abrir.",
-              },
-              {
-                q: "Posso editar depois?",
-                a: "Ainda não — a carta é congelada na criação para ter cara de carta de verdade ♡",
-              },
-              {
-                q: "Funciona no celular?",
-                a: "Sim! A página é leve, abre rapidinho e foi pensada para ser lida na cama, à noite.",
-              },
-            ].map((f) => (
+            {FAQS.map((f) => (
               <div key={f.q} className="glass rounded-3xl p-6">
                 <div className="flex items-start gap-3">
                   <span className="text-pink-hot text-xl shrink-0 pulse-heart">♡</span>

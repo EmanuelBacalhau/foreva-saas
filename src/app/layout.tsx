@@ -22,17 +22,82 @@ const inter = Inter({
   display: "swap",
 });
 
+const SITE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? "http://localhost:3000";
+
 export const metadata: Metadata = {
-  title: "Foreva",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: "Foreva — Cartas de amor eternas | Página personalizada com PIX único",
+    template: "%s · Foreva",
+  },
   description:
-    "Uma carta de amor que dura para sempre. Fotos, senha, PIX único e a página fica eterna ✨",
-  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL ?? "http://localhost:3000"),
+    "Crie uma carta de amor eterna na internet. Anexe fotos, proteja com senha e pague um PIX único de R$ 19,90. Perfeito para Dia dos Namorados, aniversário e pedidos de namoro.",
+  applicationName: "Foreva",
+  authors: [{ name: "Foreva" }],
+  creator: "Foreva",
+  publisher: "Foreva",
+  category: "Lifestyle",
+  keywords: [
+    "carta de amor",
+    "carta de amor online",
+    "página de amor",
+    "dia dos namorados",
+    "presente dia dos namorados",
+    "presente romântico",
+    "pedido de namoro",
+    "declaração de amor",
+    "site para namorada",
+    "site para namorado",
+    "carta eterna",
+    "love letter",
+    "PIX",
+  ],
+  alternates: {
+    canonical: "/",
+    languages: { "pt-BR": "/" },
+  },
   openGraph: {
-    title: "♡ Foreva",
-    description: "Uma carta que não some. Fotos, senha, PIX único.",
     type: "website",
     locale: "pt_BR",
+    url: SITE_URL,
+    siteName: "Foreva",
+    title: "Foreva — Cartas de amor eternas",
+    description:
+      "Uma carta de amor que dura para sempre. Fotos, senha, PIX único. Presente perfeito para Dia dos Namorados.",
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: "Foreva — Cartas de amor eternas",
+      },
+    ],
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "Foreva — Cartas de amor eternas",
+    description:
+      "Uma carta de amor que dura para sempre. Fotos, senha, PIX único.",
+    images: ["/opengraph-image"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+  icons: {
+    icon: [
+      { url: "/icon.svg", type: "image/svg+xml" },
+      { url: "/favicon.ico", sizes: "any" },
+    ],
+  },
+  manifest: "/manifest.webmanifest",
 };
 
 export default function RootLayout({
