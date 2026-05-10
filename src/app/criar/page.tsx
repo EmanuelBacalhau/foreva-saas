@@ -179,7 +179,9 @@ export default function CriarPage() {
               <span className="text-gradient">de verdade</span>.
             </h1>
             <p className="text-ink-soft text-lg mt-5 max-w-xl mx-auto fade-in-up delay-3">
-              Sem pressa. Dá para ver a prévia ao lado enquanto você escreve ✨
+              Sem pressa.{" "}
+              <span className="hidden lg:inline">Dá para ver a prévia ao lado enquanto você escreve ✨</span>
+              <span className="lg:hidden">A prévia aparece logo abaixo enquanto você escreve ✨</span>
             </p>
           </div>
 
