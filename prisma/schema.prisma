@@ -1,0 +1,55 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model LovePage {
+  id           String   @id @default(cuid())
+  slug         String   @unique
+  title        String
+  recipient    String
+  greeting     String?
+  letterBody   String
+  signature    String?
+  passwordHash String?
+  paid         Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  images   Image[]
+  payment  Payment?
+
+  @@index([slug])
+}
+
+model Image {
+  id      String  @id @default(cuid())
+  url     String
+  caption String?
+  order   Int     @default(0)
+  pageId  String
+  page    LovePage @relation(fields: [pageId], references: [id], onDelete: Cascade)
+
+  @@index([pageId])
+}
+
+model Payment {
+  id           String   @id @default(cuid())
+  pageId       String   @unique
+  abacateId    String?  @unique
+  amountCents  Int
+  status       String   @default("PENDING")
+  brCode       String?
+  brCodeBase64 String?  @db.Text
+  expiresAt    DateTime?
+  paidAt       DateTime?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  page LovePage @relation(fields: [pageId], references: [id], onDelete: Cascade)
+}
