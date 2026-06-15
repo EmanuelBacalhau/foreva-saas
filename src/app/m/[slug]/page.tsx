@@ -20,7 +20,7 @@ export default async function MessagePage({
   if (!page.paid) {
     return (
       <main className="relative z-[1] min-h-dvh flex flex-col">
-        <header className="sticky top-0 z-30 px-5 md:px-10 pt-4 md:pt-6 pb-3 bg-(--bg-base)/55 backdrop-blur-xl">
+        <header className="sticky top-0 z-30 px-5 md:px-10 pt-4 md:pt-6 pb-3 bg-(--bg-base)/90 backdrop-blur-none md:bg-(--bg-base)/55 md:backdrop-blur-xl">
           <div className="mx-auto max-w-6xl">
             <div className="glass pill flex items-center justify-between px-3 md:px-4 py-2.5">
               <div className="flex items-center gap-2 px-3">

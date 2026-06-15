@@ -141,7 +141,7 @@ function FloatingDecor() {
     { top: "88%", left: "70%", emoji: "✦", size: "text-xl",   c: "text-lilac-deep",  d: "twinkle"    },
   ];
   return (
-    <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
+    <div className="pointer-events-none fixed inset-0 z-0 hidden overflow-hidden md:block">
       {items.map((it, i) => (
         <span
           key={i}

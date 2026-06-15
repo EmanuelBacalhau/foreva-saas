@@ -514,6 +514,61 @@
     outline: none;
     min-height: 280px;
   }
+}
+
+/* =====================================================================
+   MOBILE PERFORMANCE PASS
+   backdrop-filter + infinite compositing loops are the main source of
+   jank/battery drain on phones. On small / touch screens we keep the
+   exact look but freeze the GPU-heavy work: blur → opaque fills, infinite
+   animations → static, full-screen noise/blend dropped. One-shot entrance
+   animations (fade-in-up / scale-in) stay — they are cheap and finish.
+   Placed outside @layer so it overrides the layered component rules.
+   ===================================================================== */
+@media (max-width: 767.98px) {
+  /* 1. freeze the animated mesh background (paints once, no compositing loop) */
+  body::before { animation: none !important; }
+  /* 2. drop full-screen film grain + mix-blend-mode overlay (costly to composite) */
+  body::after { display: none !important; }
+
+  /* 3. backdrop-filter is the #1 mobile cost — swap glass for opaque-ish fills */
+  .glass {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: oklch(1 0 0 / 0.9);
+  }
+  .glass-soft {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: oklch(1 0 0 / 0.82);
+  }
+  .glass-pink {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: linear-gradient(180deg, oklch(0.99 0.01 350 / 0.96), oklch(0.95 0.05 350 / 0.93));
+  }
+  .btn-glass,
+  .input-bubble {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  /* 4. stop infinite animation loops — keep the static rendered state */
+  .float-slow,
+  .float-mid,
+  .float-fast,
+  .twinkle,
+  .pulse-heart,
+  .spin-slow,
+  .marquee {
+    animation: none !important;
+    will-change: auto !important;
+  }
+  .text-gradient { animation: none !important; }
+  .shine::after { display: none !important; }
+}
+
+@layer utilities {
   .ProseMirror p.is-editor-empty:first-child::before {
     content: attr(data-placeholder);
     color: var(--ink-mute);
