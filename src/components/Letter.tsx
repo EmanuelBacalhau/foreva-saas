@@ -68,8 +68,8 @@ export default function Letter({
       {/* CARTA */}
       <section className="px-5 md:px-10 py-14 sm:py-20 md:py-28">
         <div className="mx-auto w-full max-w-3xl relative">
-          <div className="absolute -inset-10 blob-peach rounded-[40%] opacity-25 blur-3xl float-slow" aria-hidden />
-          <div className="relative glass-pink rounded-[1.75rem] sm:rounded-[2.5rem] md:rounded-[3rem] p-6 sm:p-8 md:p-14 -rotate-[0.6deg] shine">
+          <div className="absolute -inset-10 blob-peach rounded-[40%] opacity-25 blur-3xl" aria-hidden />
+          <div className="relative glass-pink rounded-[1.75rem] sm:rounded-[2.5rem] md:rounded-[3rem] p-6 sm:p-8 md:p-14 md:-rotate-[0.6deg] shine transform-gpu backface-hidden">
             <div className="flex items-center justify-between mb-6">
               <span className="eyebrow-y2k">No. único ✿</span>
               <span className="text-pink-hot text-xl pulse-heart">♥</span>
